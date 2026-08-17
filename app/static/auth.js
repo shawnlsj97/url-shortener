@@ -6,6 +6,12 @@ function csrfHeaders() {
   return token ? { "X-CSRF-Token": decodeURIComponent(token) } : {};
 }
 
+function errorMessageFor(body, fallback) {
+  if (typeof body.detail === "string") return body.detail;
+  if (Array.isArray(body.detail)) return body.detail.map((item) => item.msg).join(" ");
+  return fallback;
+}
+
 authForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
   authError.hidden = true;
@@ -24,7 +30,7 @@ authForm?.addEventListener("submit", async (event) => {
       }),
     });
     const body = await response.json();
-    if (!response.ok) throw new Error(body.detail || "Unable to continue.");
+    if (!response.ok) throw new Error(errorMessageFor(body, "Unable to continue."));
     window.location.assign("/dashboard");
   } catch (error) {
     authError.textContent = error.message || "Unable to continue.";

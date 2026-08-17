@@ -13,7 +13,7 @@ basic click metrics, and a responsive management dashboard.
 | Attractive, mobile-friendly UI | Accessible, server-rendered interface with responsive layouts and touch-friendly controls. |
 | Persistent storage | PostgreSQL with SQLAlchemy and versioned Alembic migrations. |
 | Public deployment | Live Docker deployment on Render. |
-| Tests and canary | 25 unit/functional tests, GitHub Actions CI, and a scheduled API canary covering health, creation, and redirect behavior. |
+| Tests and canary | Automated unit/functional tests, GitHub Actions CI, and a scheduled API canary covering health, creation, and redirect behavior. |
 
 ## Technology choices
 

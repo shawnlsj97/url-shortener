@@ -14,6 +14,7 @@ RESERVED_CODES = {
     "login",
     "not-found",
     "openapi.json",
+    "redoc",
     "register",
     "static",
 }

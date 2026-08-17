@@ -27,3 +27,10 @@ def test_styles_include_small_screen_layouts_and_touch_targets(client: TestClien
     assert ".site-nav { gap: .45rem; }" in response.text
     assert ".nav-link, .nav-cta { display: inline-flex; min-height: 40px;" in response.text
     assert ".dashboard-intro { align-items: flex-start; flex-direction: column;" in response.text
+
+
+def test_authentication_script_formats_validation_errors(client: TestClient) -> None:
+    response = client.get("/static/auth.js")
+
+    assert response.status_code == 200
+    assert "function errorMessageFor(body, fallback)" in response.text

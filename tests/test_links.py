@@ -52,10 +52,11 @@ def test_rejects_custom_alias_conflicts(client: TestClient) -> None:
     assert response.status_code == 409
 
 
-def test_rejects_reserved_custom_alias(client: TestClient) -> None:
+@pytest.mark.parametrize("custom_alias", ["dashboard", "redoc"])
+def test_rejects_reserved_custom_alias(client: TestClient, custom_alias: str) -> None:
     response = client.post(
         "/api/links",
-        json={"original_url": "https://open.gov.sg/", "custom_alias": "dashboard"},
+        json={"original_url": "https://open.gov.sg/", "custom_alias": custom_alias},
     )
 
     assert response.status_code == 422
