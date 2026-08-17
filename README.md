@@ -32,6 +32,8 @@ basic click metrics, and a responsive management dashboard.
 
 *The free-tier service may take a moment to wake after inactivity.*
 
+**Suggested review:** Create a public link, then register to create, view, and disable an owned link.
+
 ## Features
 
 - Create public `http`/`https` short links.
@@ -99,7 +101,9 @@ GitHub Actions runs the same checks on pushes and pull requests.
 | `DELETE` | `/api/links/{code}` | Disable an owned link |
 | `GET` | `/healthz` | Application/database health check |
 
-Interactive OpenAPI documentation is available at `/docs`.
+Interactive API documentation is available locally at
+[http://localhost:8000/docs](http://localhost:8000/docs) and on the
+[live demo](https://relay-url-shortener.onrender.com/docs).
 
 Example:
 
