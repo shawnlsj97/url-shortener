@@ -4,6 +4,17 @@ Relay is a production-minded URL shortener built with Python and FastAPI. It sup
 public shortening, optional accounts for link ownership, custom aliases, expiry,
 basic click metrics, and a responsive management dashboard.
 
+## Assignment coverage
+
+| Assessment goal | Relay implementation |
+| --- | --- |
+| Create short URLs | Responsive web UI and `POST /api/links` create public, shareable links. |
+| Resolve short URLs | `GET /{code}` looks up the destination and returns `302 Found`. |
+| Attractive, mobile-friendly UI | Accessible, server-rendered interface with responsive layouts and touch-friendly controls. |
+| Persistent storage | PostgreSQL with SQLAlchemy and versioned Alembic migrations. |
+| Public deployment | Live Docker deployment on Render. |
+| Tests and canary | 25 unit/functional tests, GitHub Actions CI, and a scheduled API canary covering health, creation, and redirect behavior. |
+
 ## Live demo
 
 [Open Relay](https://relay-url-shortener.onrender.com)
@@ -21,18 +32,26 @@ basic click metrics, and a responsive management dashboard.
 - Responsive, accessible server-rendered UI and JSON API.
 - PostgreSQL persistence, Alembic migrations, Docker, CI, linting, typing, and tests.
 
-## Quick start
+## Run locally
 
-The simplest setup uses Docker and PostgreSQL:
+Choose the path that best fits your environment.
+
+### Option A — Docker + PostgreSQL (recommended)
+
+Requires Docker Desktop. This starts the FastAPI application and PostgreSQL together,
+then applies migrations automatically.
 
 ```bash
 docker compose up --build
 ```
 
-Open [http://localhost:8000](http://localhost:8000). The app applies migrations
-when the development container starts.
+Open [http://localhost:8000](http://localhost:8000). Stop the stack with
+`docker compose down`.
 
-To run directly with a local Python environment:
+### Option B — Python + SQLite (no Docker)
+
+Requires Python 3.12 or later. This is the fastest way to inspect or modify the
+application without starting PostgreSQL.
 
 ```bash
 python3 -m venv .venv
@@ -41,9 +60,9 @@ python3 -m venv .venv
 .venv/bin/uvicorn app.main:app --reload
 ```
 
-By default, direct local execution uses `var/ogp.db`. Set `DATABASE_URL` to use
-PostgreSQL instead. `.env.example` uses that same SQLite default; Docker Compose
-overrides it with its Postgres service automatically.
+Open [http://localhost:8000](http://localhost:8000). Direct execution uses the local
+SQLite database at `var/ogp.db` by default. Set `DATABASE_URL` to connect to another
+PostgreSQL instance instead.
 
 ## Quality checks
 
@@ -83,8 +102,8 @@ curl -X POST http://localhost:8000/api/links \
 
 The application is a modular monolith: FastAPI routes call focused services,
 which use SQLAlchemy repositories and PostgreSQL. A unique database constraint
-is the final guard against short-code collisions. Random Base62 codes are
-generated with Python's `secrets` module.
+is the final guard against short-code collisions. Random Base62 codes are generated
+with Python's `secrets` module; no third-party shortening service is used.
 
 PostgreSQL is deliberate: it provides transactionally enforced uniqueness,
 ownership foreign keys, migrations, and straightforward local/deployed
@@ -94,7 +113,8 @@ queue-backed aggregation if redirect volume warrants it.
 
 Browser sessions use opaque random tokens, stored only as HMAC hashes in the
 database. Passwords use Argon2. State-changing authenticated requests require
-CSRF header/cookie verification.
+CSRF header/cookie verification. Security headers and no-store caching protect
+authenticated pages.
 
 Short URLs are generated from `PUBLIC_BASE_URL`, rather than the request's
 `Host` header. This keeps links correct behind a reverse proxy and makes a
