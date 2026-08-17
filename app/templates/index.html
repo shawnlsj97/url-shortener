@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Shorten a URL | Relay</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}">
+    <script defer src="{{ url_for('static', path='app.js') }}"></script>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="app-header">
+        <a class="brand" href="/">Relay<span>·</span></a>
+        <nav class="account-actions site-nav" aria-label="Account navigation">
+          {% if user %}
+            <a class="nav-link" href="/dashboard">Dashboard</a>
+          {% else %}
+            <a class="nav-link" href="/login">Log in</a>
+            <a class="nav-cta" href="/register">Create account</a>
+          {% endif %}
+        </nav>
+      </header>
+      <section class="hero" aria-labelledby="page-title">
+        <p class="eyebrow">Simple links, clearly shared</p>
+        <h1 id="page-title">Make every URL easier to pass on.</h1>
+        <p class="lede">Paste a long link and get a short, reliable redirect in seconds.</p>
+      </section>
+
+      <section class="card" aria-label="Create a short link">
+        <form id="create-link-form" action="/api/links" method="post" novalidate>
+          <label for="original-url">Destination URL</label>
+          <div class="form-row">
+            <input id="original-url" name="original_url" type="url" inputmode="url"
+              placeholder="https://example.com/a-very-long-link" autocomplete="url" required>
+            <button type="submit">Shorten URL</button>
+          </div>
+          <details class="options">
+            <summary>Customise this link</summary>
+            <div class="option-grid">
+              <label for="custom-alias">Custom alias <span>Optional</span>
+                <input id="custom-alias" name="custom_alias" type="text" inputmode="text"
+                  pattern="[a-z0-9][a-z0-9-]{1,30}[a-z0-9]" minlength="3" maxlength="32"
+                  placeholder="my-event" autocomplete="off">
+              </label>
+              <label for="expires-at">Expiry <span>Optional</span>
+                <input id="expires-at" name="expires_at" type="datetime-local">
+              </label>
+            </div>
+          </details>
+          <p id="form-error" class="form-error" role="alert" hidden></p>
+        </form>
+
+        <section id="result" class="result" aria-live="polite" hidden>
+          <p class="result-label">Your short URL</p>
+          <div class="result-row">
+            <a id="short-url" href="#"></a>
+            <button id="copy-button" class="secondary" type="button">Copy</button>
+          </div>
+          <p id="copy-status" class="copy-status"></p>
+        </section>
+      </section>
+
+      <p class="footnote">Short links are public. Only share them with people you trust.</p>
+    </main>
+  </body>
+</html>

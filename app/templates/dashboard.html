@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Your links | Relay</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}">
+    <script defer src="{{ url_for('static', path='dashboard.js') }}"></script>
+  </head>
+  <body>
+    <main class="shell dashboard-shell">
+      <header class="app-header">
+        <a class="brand" href="/">Relay<span>·</span></a>
+        <div class="account-actions">
+          <span>{{ user.email }}</span>
+          <button id="logout-button" class="text-button" type="button">Log out</button>
+        </div>
+      </header>
+
+      <section class="dashboard-intro" aria-labelledby="dashboard-title">
+        <div>
+          <p class="eyebrow">Link management</p>
+          <h1 id="dashboard-title">Your links</h1>
+          <p class="lede">Create, monitor, and retire the links you own.</p>
+        </div>
+        <div class="stats">
+          <div class="stat-card"><strong>{{ links|length }}</strong><span>links created</span></div>
+          <div class="stat-card"><strong>{{ click_totals.values()|sum }}</strong><span>total clicks</span></div>
+        </div>
+      </section>
+
+      <section class="card create-panel" aria-labelledby="create-title">
+        <h2 id="create-title">Create a managed link</h2>
+        <form id="dashboard-create-form" novalidate>
+          <label for="dashboard-original-url">Destination URL
+            <input id="dashboard-original-url" type="url" inputmode="url" placeholder="https://example.com" required>
+          </label>
+          <div class="option-grid">
+            <label for="dashboard-custom-alias">Custom alias <span>Optional</span>
+              <input id="dashboard-custom-alias" type="text" pattern="[a-z0-9][a-z0-9-]{1,30}[a-z0-9]" minlength="3" maxlength="32" placeholder="launch-day">
+            </label>
+            <label for="dashboard-expires-at">Expiry <span>Optional</span>
+              <input id="dashboard-expires-at" type="datetime-local">
+            </label>
+          </div>
+          <p id="dashboard-error" class="form-error" role="alert" hidden></p>
+          <button type="submit">Create link</button>
+        </form>
+      </section>
+
+      <section class="link-list" aria-labelledby="link-list-title">
+        <div class="section-heading">
+          <h2 id="link-list-title">Recent links</h2>
+          <span>{{ links|length }} total</span>
+        </div>
+        {% if links %}
+          <div class="link-cards">
+            {% for link in links %}
+              <article class="link-card{% if link.disabled_at %} is-disabled{% endif %}" data-code="{{ link.code }}">
+                <div class="link-card-main">
+                  <a href="/{{ link.code }}" target="_blank" rel="noreferrer">{{ public_base_url }}/{{ link.code }}</a>
+                  <p title="{{ link.original_url }}">{{ link.original_url }}</p>
+                </div>
+                <div class="link-meta">
+                  {% if link.disabled_at %}<span class="status status-disabled">Disabled</span>
+                  {% elif link.expires_at %}<span class="status">Expires {{ link.expires_at.strftime('%d %b %Y') }}</span>
+                  {% else %}<span class="status">Active</span>{% endif %}
+                  <span class="click-count">{{ click_totals.get(link.id, 0) }} clicks</span>
+                  {% if not link.disabled_at %}<button class="text-button disable-button" type="button">Disable</button>{% endif %}
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="empty-state">
+            <h3>No managed links yet</h3>
+            <p>Your saved links will appear here after you create one.</p>
+          </div>
+        {% endif %}
+      </section>
+    </main>
+  </body>
+</html>

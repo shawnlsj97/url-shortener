@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page_title }} | Relay</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}">
+    <script defer src="{{ url_for('static', path='auth.js') }}"></script>
+  </head>
+  <body>
+    <main class="shell auth-shell">
+      <a class="brand" href="/">Relay<span>·</span></a>
+      <section class="auth-card" aria-labelledby="auth-title">
+        <p class="eyebrow">Your links, in one place</p>
+        <h1 id="auth-title">{{ page_title }}</h1>
+        <p class="lede">{{ "Log in to manage the links you create." if mode == "login" else "Create an account to manage and track your links." }}</p>
+        <form id="auth-form" data-mode="{{ mode }}" novalidate>
+          <label for="email">Email address
+            <input id="email" type="email" autocomplete="email" required>
+          </label>
+          <label for="password">Password
+            <input id="password" type="password" autocomplete="{{ 'current-password' if mode == 'login' else 'new-password' }}" minlength="12" required>
+          </label>
+          <p class="password-hint">Use at least 12 characters.</p>
+          <p id="auth-error" class="form-error" role="alert" hidden></p>
+          <button type="submit">{{ submit_label }}</button>
+        </form>
+        <p class="auth-switch">
+          {% if mode == "login" %}
+            New here? <a href="/register">Create an account</a>.
+          {% else %}
+            Already have an account? <a href="/login">Log in</a>.
+          {% endif %}
+        </p>
+      </section>
+    </main>
+  </body>
+</html>
