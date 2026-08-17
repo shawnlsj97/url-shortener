@@ -41,7 +41,8 @@
               <span id="dashboard-custom-alias-hint" class="field-hint">3–32 lowercase letters or numbers; hyphens allowed between them.</span>
             </label>
             <label for="dashboard-expires-at">Expiry <span>Optional</span>
-              <input id="dashboard-expires-at" type="datetime-local">
+              <input id="dashboard-expires-at" type="datetime-local" aria-describedby="dashboard-expires-at-hint">
+              <span id="dashboard-expires-at-hint" class="field-hint">Must be a future date and time.</span>
             </label>
           </div>
           <p id="dashboard-error" class="form-error" role="alert" hidden></p>

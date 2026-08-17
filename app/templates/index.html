@@ -44,7 +44,8 @@
                 <span id="custom-alias-hint" class="field-hint">3–32 lowercase letters or numbers; hyphens allowed between them.</span>
               </label>
               <label for="expires-at">Expiry <span>Optional</span>
-                <input id="expires-at" name="expires_at" type="datetime-local">
+                <input id="expires-at" name="expires_at" type="datetime-local" aria-describedby="expires-at-hint">
+                <span id="expires-at-hint" class="field-hint">Must be a future date and time.</span>
               </label>
             </div>
           </details>

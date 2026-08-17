@@ -7,6 +7,12 @@ function csrfHeaders() {
   return token ? { "X-CSRF-Token": decodeURIComponent(token) } : {};
 }
 
+function errorMessageFor(body, fallback) {
+  if (typeof body.detail === "string") return body.detail;
+  if (Array.isArray(body.detail)) return body.detail.map((item) => item.msg).join(" ");
+  return fallback;
+}
+
 dashboardForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
   dashboardError.hidden = true;
@@ -25,7 +31,7 @@ dashboardForm?.addEventListener("submit", async (event) => {
       }),
     });
     const body = await response.json();
-    if (!response.ok) throw new Error(body.detail || "Unable to create the link.");
+    if (!response.ok) throw new Error(errorMessageFor(body, "Unable to create the link."));
     window.location.reload();
   } catch (error) {
     dashboardError.textContent = error.message || "Unable to create the link.";

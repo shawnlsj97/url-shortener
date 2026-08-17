@@ -13,6 +13,12 @@ function csrfHeaders() {
   return token ? { "X-CSRF-Token": decodeURIComponent(token) } : {};
 }
 
+function errorMessageFor(body, fallback) {
+  if (typeof body.detail === "string") return body.detail;
+  if (Array.isArray(body.detail)) return body.detail.map((item) => item.msg).join(" ");
+  return fallback;
+}
+
 form?.addEventListener("submit", async (event) => {
   event.preventDefault();
   errorMessage.hidden = true;
@@ -35,7 +41,7 @@ form?.addEventListener("submit", async (event) => {
     const body = await response.json();
 
     if (!response.ok) {
-      throw new Error(body.detail || "Please enter a valid URL.");
+      throw new Error(errorMessageFor(body, "Please enter a valid URL."));
     }
 
     shortUrl.href = body.short_url;
