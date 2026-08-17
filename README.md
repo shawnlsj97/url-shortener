@@ -15,6 +15,17 @@ basic click metrics, and a responsive management dashboard.
 | Public deployment | Live Docker deployment on Render. |
 | Tests and canary | 25 unit/functional tests, GitHub Actions CI, and a scheduled API canary covering health, creation, and redirect behavior. |
 
+## Technology choices
+
+| Area | Choice | Why |
+| --- | --- | --- |
+| Backend | Python 3.12, FastAPI, Pydantic | Familiar, strongly typed request validation with concise, explicit HTTP handlers. |
+| Application design | Modular monolith | Keeps routes, business services, and persistence boundaries clear without premature distributed-system complexity. |
+| Frontend | Jinja templates, vanilla JavaScript, CSS | No client build pipeline; the full user flow is straightforward to trace, modify, and keep responsive. |
+| Data | PostgreSQL, SQLAlchemy | Relational ownership plus transactionally enforced uniqueness make link creation and management reliable. |
+| Schema changes | Alembic | Versioned, repeatable database migrations for local and deployed environments. |
+| Delivery | Docker, GitHub Actions, Render | Reproducible runtime, automated quality checks, and a public review deployment. |
+
 ## Live demo
 
 [Open Relay](https://relay-url-shortener.onrender.com)
