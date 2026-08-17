@@ -1,0 +1,1 @@
+"""Relay URL shortener application."""

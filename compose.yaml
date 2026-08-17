@@ -1,0 +1,29 @@
+services:
+  app:
+    build: .
+    environment:
+      APP_ENVIRONMENT: development
+      DATABASE_URL: postgresql+psycopg://ogp:ogp@db:5432/ogp
+      PUBLIC_BASE_URL: http://localhost:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ogp
+      POSTGRES_USER: ogp
+      POSTGRES_PASSWORD: ogp
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ogp -d ogp"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

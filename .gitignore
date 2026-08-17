@@ -1,0 +1,15 @@
+.env
+.DS_Store
+DEPLOYMENT.md
+.venv/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.py[cod]
+*.egg-info/
+coverage.xml
+htmlcov/
+var/*
+!var/.gitkeep
+system-design/
