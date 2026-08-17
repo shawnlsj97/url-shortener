@@ -1,0 +1,39 @@
+name: Production Canary
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 4 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  canary:
+    if: vars.APP_URL != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      APP_URL: ${{ vars.APP_URL }}
+    steps:
+      - name: Verify health, creation, and redirect
+        shell: bash
+        run: |
+          set -euo pipefail
+          : "${APP_URL:?Set the APP_URL repository variable before enabling this canary.}"
+
+          base_url="${APP_URL%/}"
+          curl --fail --silent --show-error --retry 6 --retry-all-errors --retry-delay 10 \
+            --max-time 120 "${base_url}/healthz" | jq -e '.status == "ok"'
+
+          destination="https://example.com/canary/${GITHUB_RUN_ID}"
+          response="$(curl --fail --silent --show-error --retry 3 --retry-all-errors \
+            -X POST "${base_url}/api/links" \
+            -H 'content-type: application/json' \
+            --data "{\"original_url\":\"${destination}\"}")"
+          short_url="$(jq --raw-output '.short_url' <<<"${response}")"
+          test "${short_url}" != "null"
+
+          location="$(curl --silent --show-error --dump-header - --output /dev/null \
+            --max-time 120 "${short_url}" | awk 'tolower($1) == "location:" { print $2 }' | tr -d '\r')"
+          test "${location}" = "${destination}"
