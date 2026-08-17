@@ -4,6 +4,12 @@ Relay is a production-minded URL shortener built with Python and FastAPI. It sup
 public shortening, optional accounts for link ownership, custom aliases, expiry,
 basic click metrics, and a responsive management dashboard.
 
+## Live demo
+
+[Open Relay](https://relay-url-shortener.onrender.com)
+
+*The free-tier service may take a moment to wake after inactivity.*
+
 ## Features
 
 - Create public `http`/`https` short links.
