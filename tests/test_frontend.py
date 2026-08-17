@@ -10,6 +10,8 @@ def test_public_page_has_a_mobile_viewport(client: TestClient) -> None:
     assert 'href="/login"' in response.text
     assert 'href="/register"' in response.text
     assert 'class="account-actions site-nav"' in response.text
+    assert "3–32 lowercase letters or numbers; hyphens allowed between them." in response.text
+    assert 'aria-describedby="custom-alias-hint"' in response.text
     assert response.headers["x-content-type-options"] == "nosniff"
     assert response.headers["x-frame-options"] == "DENY"
 

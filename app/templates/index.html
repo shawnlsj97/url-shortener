@@ -40,7 +40,8 @@
               <label for="custom-alias">Custom alias <span>Optional</span>
                 <input id="custom-alias" name="custom_alias" type="text" inputmode="text"
                   pattern="[a-z0-9][a-z0-9-]{1,30}[a-z0-9]" minlength="3" maxlength="32"
-                  placeholder="my-event" autocomplete="off">
+                  placeholder="my-event" autocomplete="off" aria-describedby="custom-alias-hint">
+                <span id="custom-alias-hint" class="field-hint">3–32 lowercase letters or numbers; hyphens allowed between them.</span>
               </label>
               <label for="expires-at">Expiry <span>Optional</span>
                 <input id="expires-at" name="expires_at" type="datetime-local">

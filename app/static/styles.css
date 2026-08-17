@@ -46,6 +46,7 @@ button:disabled { cursor: wait; opacity: .7; }
 .option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; margin-top: .9rem; }
 .option-grid label { color: var(--ink); }
 .option-grid input { display: block; width: 100%; margin-top: .35rem; }
+.field-hint { display: block; margin-top: .35rem; color: var(--muted); font-size: .75rem; font-weight: 500; line-height: 1.4; }
 .result { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
 .result-row a { min-width: 0; flex: 1; overflow: hidden; color: var(--accent-dark); font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
 .copy-status { min-height: 1.2em; margin: .5rem 0 0; color: var(--muted); font-size: .875rem; }

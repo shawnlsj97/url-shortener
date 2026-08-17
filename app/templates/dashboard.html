@@ -37,7 +37,8 @@
           </label>
           <div class="option-grid">
             <label for="dashboard-custom-alias">Custom alias <span>Optional</span>
-              <input id="dashboard-custom-alias" type="text" pattern="[a-z0-9][a-z0-9-]{1,30}[a-z0-9]" minlength="3" maxlength="32" placeholder="launch-day">
+              <input id="dashboard-custom-alias" type="text" pattern="[a-z0-9][a-z0-9-]{1,30}[a-z0-9]" minlength="3" maxlength="32" placeholder="launch-day" aria-describedby="dashboard-custom-alias-hint">
+              <span id="dashboard-custom-alias-hint" class="field-hint">3–32 lowercase letters or numbers; hyphens allowed between them.</span>
             </label>
             <label for="dashboard-expires-at">Expiry <span>Optional</span>
               <input id="dashboard-expires-at" type="datetime-local">
